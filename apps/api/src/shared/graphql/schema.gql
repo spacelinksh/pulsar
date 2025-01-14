@@ -1,0 +1,361 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Permission {
+  """The unique identifier of the entity"""
+  id: String!
+
+  """The date and time the entity was created"""
+  createdAt: DateTime!
+
+  """The date and time the entity was last updated"""
+  updatedAt: DateTime!
+
+  """The name of the permission"""
+  name: String!
+
+  """The description of the permission"""
+  description: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Role {
+  """The unique identifier of the entity"""
+  id: String!
+
+  """The date and time the entity was created"""
+  createdAt: DateTime!
+
+  """The date and time the entity was last updated"""
+  updatedAt: DateTime!
+
+  """The name of the role"""
+  name: String!
+
+  """The description of the role"""
+  description: String
+
+  """The permissions of the role"""
+  permissions: [Permission!]!
+}
+
+type Customer {
+  """The unique identifier of the entity"""
+  id: String!
+
+  """The date and time the entity was created"""
+  createdAt: DateTime!
+
+  """The date and time the entity was last updated"""
+  updatedAt: DateTime!
+
+  """The name of the customer"""
+  name: String!
+
+  """The email of the customer"""
+  email: String!
+
+  """The phone of the customer"""
+  phone: String
+
+  """The document of the customer"""
+  document: String!
+
+  """The status of the customer"""
+  status: CustomerStatus!
+
+  """The user of the customer"""
+  user: User!
+}
+
+"""The status of the customer"""
+enum CustomerStatus {
+  ACTIVE
+  INACTIVE
+  USER
+  PENDING
+}
+
+type User {
+  """The unique identifier of the entity"""
+  id: String!
+
+  """The date and time the entity was created"""
+  createdAt: DateTime!
+
+  """The date and time the entity was last updated"""
+  updatedAt: DateTime!
+
+  """The name of the user"""
+  name: String!
+
+  """The email address of the user"""
+  email: String!
+
+  """The phone number of the user"""
+  phone: String
+
+  """The document of the user"""
+  document: String!
+
+  """The token of the user"""
+  token: String
+
+  """The avatar of the user"""
+  avatar: String
+
+  """The status of the user"""
+  status: UserStatus!
+
+  """The role of the user"""
+  role: Role!
+
+  """The customers of the user"""
+  customers: [Customer!]
+}
+
+"""The status of the user"""
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+}
+
+type Auth {
+  """User logged in"""
+  user: User!
+
+  """Session access token"""
+  accessToken: String!
+}
+
+type Transaction {
+  """The unique identifier of the entity"""
+  id: String!
+
+  """The date and time the entity was created"""
+  createdAt: DateTime!
+
+  """The date and time the entity was last updated"""
+  updatedAt: DateTime!
+
+  """Transaction type"""
+  type: TransactionType!
+
+  """Transaction amount"""
+  amount: Float!
+
+  """Transaction description"""
+  description: String!
+
+  """Transaction user"""
+  user: User!
+}
+
+"""The type of the transaction"""
+enum TransactionType {
+  DEPOSIT
+  WITHDRAW
+}
+
+type TransferKey {
+  """The unique identifier of the entity"""
+  id: String!
+
+  """The date and time the entity was created"""
+  createdAt: DateTime!
+
+  """The date and time the entity was last updated"""
+  updatedAt: DateTime!
+
+  """The key to be used for transfer"""
+  key: String!
+
+  """Whether the key is active"""
+  active: Boolean!
+
+  """The user associated with the key"""
+  user: User!
+}
+
+type Query {
+  getAllUsers: [User!]!
+  getUserById(id: String!): User!
+  getMe: User!
+  getAllPermissions: [Permission!]!
+  getPermissionById(id: String!): Permission!
+  getAllRoles: [Role!]!
+  getRoleById(id: String!): Role!
+  getAllTransactions: [Transaction!]!
+  getTransactionById(id: String!): Transaction!
+  getAllCustomers: [Customer!]!
+  getCustomerById(id: String!): Customer!
+  getAllTransferKeys: [TransferKey!]!
+  getTransferKey(id: String!): TransferKey!
+}
+
+type Mutation {
+  signIn(signInInput: SignInDto!): Auth!
+  createUser(data: CreateUserDto!): User!
+  deleteUser(id: String!): User!
+  createPermission(data: CreatePermissionDto!): Permission!
+  updatePermission(data: UpdatePermissionDto!): Permission!
+  deletePermission(id: String!): Permission!
+  createRole(data: CreateRoleDto!): Role!
+  updateRole(data: UpdateRoleDto!): Role!
+  deleteRole(id: String!): Role!
+  createTransaction(data: CreateTransactionDto!): Transaction!
+  updateTransaction(data: UpdateTransactionDto!): Transaction!
+  deleteTransaction(id: String!): Transaction!
+  createCustomer(data: CreateCustomerDto!): Customer!
+  updateCustomer(data: UpdateCustomerDto!): Customer!
+  deleteCustomer(id: String!): Customer!
+  createTransferKey(data: CreateTransferKeyDto!): TransferKey!
+  deleteTransferKey(id: String!): TransferKey!
+}
+
+input SignInDto {
+  """Email of the user"""
+  email: String!
+
+  """Password of the user"""
+  normalizedPassword: String!
+}
+
+input CreateUserDto {
+  """The name of the user"""
+  name: String!
+
+  """The email address of the user"""
+  email: String!
+
+  """The phone number of the user"""
+  phone: String
+
+  """The document of the user"""
+  document: String!
+
+  """The token of the user"""
+  token: String
+
+  """The status of the user"""
+  status: UserStatus!
+
+  """The password of the user"""
+  password: String!
+
+  """The role id of the user"""
+  roleId: ID!
+}
+
+input CreatePermissionDto {
+  """The name of the permission"""
+  name: String!
+
+  """The description of the permission"""
+  description: String
+}
+
+input UpdatePermissionDto {
+  """The name of the permission"""
+  name: String
+
+  """The description of the permission"""
+  description: String
+
+  """The id of the permission"""
+  id: String!
+}
+
+input CreateRoleDto {
+  """The name of the role"""
+  name: String!
+
+  """The description of the role"""
+  description: String
+
+  """The permissions of the role"""
+  permissions: [ID!]!
+}
+
+input UpdateRoleDto {
+  """The name of the role"""
+  name: String
+
+  """The description of the role"""
+  description: String
+
+  """The permissions of the role"""
+  permissions: [ID!]
+
+  """The id of the role"""
+  id: ID!
+}
+
+input CreateTransactionDto {
+  """The description of the transaction"""
+  description: String!
+
+  """The type of the transaction"""
+  type: TransactionType!
+
+  """The amount of the transaction"""
+  amount: Float!
+}
+
+input UpdateTransactionDto {
+  """The description of the transaction"""
+  description: String
+
+  """The type of the transaction"""
+  type: TransactionType
+
+  """The amount of the transaction"""
+  amount: Float
+
+  """The id of the transaction"""
+  id: ID!
+}
+
+input CreateCustomerDto {
+  """The name of the customer"""
+  name: String!
+
+  """The email of the customer"""
+  email: String!
+
+  """The phone of the customer"""
+  phone: String
+
+  """The document of the customer"""
+  document: String!
+}
+
+input UpdateCustomerDto {
+  """The name of the customer"""
+  name: String
+
+  """The email of the customer"""
+  email: String
+
+  """The phone of the customer"""
+  phone: String
+
+  """The document of the customer"""
+  document: String
+
+  """The id of the customer"""
+  id: String!
+}
+
+input CreateTransferKeyDto {
+  """The key to be used for transfer"""
+  key: String!
+
+  """Whether the key is active"""
+  active: Boolean!
+}
